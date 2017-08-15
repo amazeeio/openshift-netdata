@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netdata-master
+  namespace: monitoring
+spec:
+  hostPID: true
+  hostIPC: true
+  hostNetwork: true
+  ## The following section is required if you want to run it in a normal pod in master node
+  tolerations: 
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  containers:
+  - name: netdata
+    image: fzerorubigd/netdata
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      privileged: true
+    env:
+    - name: ND_1
+      value: "netdata.conf|global/memory mode = save"
+    - name: ND_2
+      value: "netdata.conf|global/bind to = 127.0.0.1:19999 192.168.10.1:19999"
+    - name: ND_3
+      value: "stream.conf|XXXXXXXXX/enabled = yes"
+    - name: ND_4
+      value: "stream.conf|XXXXXXXXX/history = 3600"
+    - name: ND_5
+      value: "stream.conf|XXXXXXXXX/memory mode = save"
+    - name: ND_6
+      value: "stream.conf|XXXXXXXXX/health enabled = yes"
+    - name: ND_7
+      value: "stream.conf|XXXXXXXXX/postpone alarms on connect seconds = 60"
+    - name: SEND_SLACK
+      value: "YES"
+    - name: SLACK_WEBHOOK_URL
+      value: "https://hooks.slack.com/services/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXX"
+    - name: SLACK_CHANNEL
+      value: "XXXX"
+    volumeMounts:
+      - name: proc
+        mountPath: /host/proc
+        readOnly: true
+      - name: run
+        mountPath: /var/run/docker.sock
+      - name: sys
+        mountPath: /host/sys
+      - name: health
+        mountPath: /etc/netdata/health.d
+  volumes:
+    - name: proc
+      hostPath:
+        path: /proc
+    - name: run
+      hostPath:
+        path: /var/run/docker.sock
+    - name: sys
+      hostPath:
+        path: /sys
+    - name: health
+      hostPath:
+        path: /global/netdata/helth.d
+  nodeSelector:
+    netdata: master-node
