@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: netdata-master
+  namespace: monitoring
+spec:
+  type: ExternalName
+  ports:
+  - port: 19999
+  externalName: 192.168.10.1

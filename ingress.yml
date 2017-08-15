@@ -1,0 +1,23 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: netdata-ingress
+  namespace: monitoring
+  annotations:
+    # type of authentication
+    ingress.kubernetes.io/auth-type: basic
+    # name of the secret that contains the user/password definitions
+    ingress.kubernetes.io/auth-secret: basic-auth
+    # message to display with an appropiate context why the authentication is required
+    ingress.kubernetes.io/auth-realm: "Authentication Required"
+    ingress.kubernetes.io/enable-cors: "true"
+spec:
+  rules:
+  - host: xxxxx.example.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: netdata-master
+          servicePort: 19999
