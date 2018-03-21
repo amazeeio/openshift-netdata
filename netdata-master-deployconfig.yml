@@ -83,8 +83,8 @@ spec:
               name: run
             - mountPath: /host/sys
               name: sys
-            - mountPath: /etc/netdata/health.d
-              name: health
+            # - mountPath: /etc/netdata/health.d
+            #   name: health
             - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
               name: default-token-gs1wq
               readOnly: true
@@ -116,9 +116,9 @@ spec:
         - hostPath:
             path: /sys
           name: sys
-        - hostPath:
-            path: /global/netdata/health.d
-          name: health
+        # - hostPath:
+        #     path: /global/netdata/health.d
+        #   name: health
         - name: default-token-gs1wq
           secret:
             defaultMode: 420
