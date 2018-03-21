@@ -1,14 +1,15 @@
+
 apiVersion: v1
 kind: Pod
 metadata:
   name: netdata-master
-  namespace: monitoring
+  namespace: netdata
 spec:
   hostPID: true
   hostIPC: true
   hostNetwork: true
   ## The following section is required if you want to run it in a normal pod in master node
-  tolerations: 
+  tolerations:
   - key: node-role.kubernetes.io/master
     operator: Exists
     effect: NoSchedule
@@ -22,19 +23,19 @@ spec:
     - name: ND_1
       value: "netdata.conf|global/memory mode = save"
     - name: ND_2
-      value: "netdata.conf|global/bind to = 127.0.0.1:19999 192.168.10.1:19999"
+      value: "netdata.conf|global/bind to = 0.0.0.0:19999"
     - name: ND_3
-      value: "stream.conf|XXXXXXXXX/enabled = yes"
+      value: "stream.conf|01-00-01/enabled = yes"
     - name: ND_4
-      value: "stream.conf|XXXXXXXXX/history = 3600"
+      value: "stream.conf|01-00-01/history = 3600"
     - name: ND_5
-      value: "stream.conf|XXXXXXXXX/memory mode = save"
+      value: "stream.conf|01-00-01/memory mode = save"
     - name: ND_6
-      value: "stream.conf|XXXXXXXXX/health enabled = yes"
+      value: "stream.conf|01-00-01/health enabled = yes"
     - name: ND_7
-      value: "stream.conf|XXXXXXXXX/postpone alarms on connect seconds = 60"
+      value: "stream.conf|01-00-01/postpone alarms on connect seconds = 60"
     - name: SEND_SLACK
-      value: "YES"
+      value: "NO"
     - name: SLACK_WEBHOOK_URL
       value: "https://hooks.slack.com/services/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXX"
     - name: SLACK_CHANNEL
@@ -61,6 +62,4 @@ spec:
         path: /sys
     - name: health
       hostPath:
-        path: /global/netdata/helth.d
-  nodeSelector:
-    netdata: master-node
+        path: /global/netdata/health.d

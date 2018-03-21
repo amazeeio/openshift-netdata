@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: netdata-master
-  namespace: monitoring
+  namespace: netdata
 spec:
   type: ExternalName
   ports:

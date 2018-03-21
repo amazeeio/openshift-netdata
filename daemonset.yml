@@ -1,11 +1,11 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: monitoring-agent
-  namespace: monitoring
+  name: netdata-slave
+  namespace: netdata
   labels:
-    tier: monitoring
-    app: monitoring-agent
+    tier: netdata
+    app: netdata-slave
     version: v1
 spec:
   template:

@@ -2,13 +2,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: netdata-slave-cfg
-  namespace: monitoring
+  namespace: netdata
 data:
   ND_1: "netdata.conf|global/memory mode = ram"
   ND_2: "netdata.conf|web/mode = none"
   ND_3: "stream.conf|stream/enabled = yes"
-  ND_4: "stream.conf|stream/destination = 192.168.10.1:19999"
-  ND_5: "stream.conf|stream/api key = XXXXXXXXX"
+  ND_4: "stream.conf|stream/destination = netdata-master.netdata.svc:19999"
+  ND_5: "stream.conf|stream/api key = 01-00-01"
   ND_6: "stream.conf|stream/timeout seconds = 60"
   ND_7: "stream.conf|stream/buffer size bytes = 1048576"
   ND_8: "stream.conf|stream/reconnect delay seconds = 5"
