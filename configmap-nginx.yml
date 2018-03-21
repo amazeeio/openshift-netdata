@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  app.conf: |2-
+      server {
+
+          listen 8080 default_server;
+
+          include /etc/nginx/helpers/*.conf;
+
+          location / {
+              proxy_ignore_client_abort on;
+              proxy_pass http://netdata-master.netdata.svc.cluster.local:19999;
+              proxy_redirect off;
+              proxy_set_header  X-Real-IP  $remote_addr;
+              proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header  Host $http_host;
+          }
+
+      }
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: netdata
