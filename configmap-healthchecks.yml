@@ -1,0 +1,25 @@
+apiVersion: v1
+data:
+  testcheck.conf: >
+    # you can disable an alarm notification by setting the 'to' line to:
+    silent
+
+    template:
+    testcheck
+          on: system.cpu
+          os: linux
+       hosts: *
+      lookup: average -1m unaligned of user,system,softirq,irq,guest
+       units: %
+       every: 1m
+        warn: $this > (($status >= $WARNING)  ? (1) : (85))
+        crit: $this > (($status == $CRITICAL) ? (85) : (95))
+       delay: down 15m multiplier 1.5 max 1h
+        info: average cpu utilization for the last 10 minutes (excluding iowait, nice and steal)
+          to: sysadmin
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: '2018-03-21T22:34:40Z'
+  name: healthchecks-master
+  namespace: netdata

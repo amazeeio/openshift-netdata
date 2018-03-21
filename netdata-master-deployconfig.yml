@@ -7,6 +7,9 @@ metadata:
   namespace: netdata
 spec:
   replicas: 1
+  selector:
+    app: netdata-master
+    deploymentconfig: netdata-master
   strategy:
     activeDeadlineSeconds: 21600
     resources: {}
@@ -19,7 +22,6 @@ spec:
     type: Rolling
   template:
     metadata:
-      annotations:
       labels:
         app: netdata-master
         deploymentconfig: netdata-master
@@ -35,15 +37,22 @@ spec:
             - name: ND_4
               value: stream.conf|11111111-2222-3333-4444-555555555555/history = 3600
             - name: ND_5
-              value: stream.conf|11111111-2222-3333-4444-555555555555/memory mode = save
+              value: >-
+                stream.conf|11111111-2222-3333-4444-555555555555/memory mode =
+                save
             - name: ND_6
-              value: stream.conf|11111111-2222-3333-4444-555555555555/health enabled = yes
+              value: >-
+                stream.conf|11111111-2222-3333-4444-555555555555/health enabled
+                = yes
             - name: ND_7
-              value: stream.conf|11111111-2222-3333-4444-555555555555/postpone alarms on connect seconds = 60
+              value: >-
+                stream.conf|11111111-2222-3333-4444-555555555555/postpone alarms
+                on connect seconds = 60
             - name: SEND_SLACK
               value: 'NO'
             - name: SLACK_WEBHOOK_URL
-              value: 'https://hooks.slack.com/services/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXX'
+              value: >-
+                https://hooks.slack.com/services/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXX
             - name: SLACK_CHANNEL
               value: XXXX
           image: fzerorubigd/netdata
@@ -69,7 +78,6 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          name: netdata
           resources: {}
           securityContext:
             privileged: true
@@ -83,11 +91,11 @@ spec:
               name: run
             - mountPath: /host/sys
               name: sys
-            # - mountPath: /etc/netdata/health.d
-            #   name: health
             - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
               name: default-token-gs1wq
               readOnly: true
+            - mountPath: /etc/netdata/health.d/additional
+              name: volume-ojk5f
       dnsPolicy: ClusterFirst
       hostIPC: true
       hostPID: true
@@ -116,10 +124,14 @@ spec:
         - hostPath:
             path: /sys
           name: sys
-        # - hostPath:
-        #     path: /global/netdata/health.d
-        #   name: health
         - name: default-token-gs1wq
           secret:
             defaultMode: 420
             secretName: default-token-gs1wq
+        - configMap:
+            defaultMode: 420
+            name: healthchecks-master
+          name: volume-ojk5f
+  test: false
+  triggers:
+    - type: ConfigChange
