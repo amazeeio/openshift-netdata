@@ -8,10 +8,13 @@ metadata:
     app: netdata-slave
     version: v1
 spec:
+  selector:
+    matchLabels:
+      name: netdata
   template:
     metadata:
       labels:
-        name: monitoring
+        name: netdata
     spec:
       hostPID: true
       hostIPC: true
@@ -37,6 +40,8 @@ spec:
               mountPath: /host/sys
             - name: cache
               mountPath: /var/cache/netdata
+      nodeSelector:
+        region: urz
       volumes:
         - name: proc
           hostPath:
