@@ -1,65 +1,87 @@
-
 apiVersion: v1
 kind: Pod
 metadata:
+  labels:
+    service: netdata-master
   name: netdata-master
   namespace: netdata
 spec:
-  hostPID: true
+  containers:
+    - env:
+        - name: ND_1
+          value: netdata.conf|global/memory mode = save
+        - name: ND_2
+          value: 'netdata.conf|global/bind to = 0.0.0.0:19999'
+        - name: ND_3
+          value: stream.conf|01-00-01/enabled = yes
+        - name: ND_4
+          value: stream.conf|01-00-01/history = 3600
+        - name: ND_5
+          value: stream.conf|01-00-01/memory mode = save
+        - name: ND_6
+          value: stream.conf|01-00-01/health enabled = yes
+        - name: ND_7
+          value: stream.conf|01-00-01/postpone alarms on connect seconds = 60
+        - name: SEND_SLACK
+          value: 'NO'
+        - name: SLACK_WEBHOOK_URL
+          value: 'https://hooks.slack.com/services/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXX'
+        - name: SLACK_CHANNEL
+          value: XXXX
+      image: fzerorubigd/netdata
+      imagePullPolicy: IfNotPresent
+      name: netdata
+      resources: {}
+      securityContext:
+        privileged: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /host/proc
+          name: proc
+          readOnly: true
+        - mountPath: /var/run/docker.sock
+          name: run
+        - mountPath: /host/sys
+          name: sys
+        - mountPath: /etc/netdata/health.d
+          name: health
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: default-token-gs1wq
+          readOnly: true
+  dnsPolicy: ClusterFirst
   hostIPC: true
   hostNetwork: true
-  ## The following section is required if you want to run it in a normal pod in master node
+  hostPID: true
+  imagePullSecrets:
+    - name: default-dockercfg-p332k
+  nodeName: node3-vmw-drupal
+  nodeSelector:
+    region: urz
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
   tolerations:
-  - key: node-role.kubernetes.io/master
-    operator: Exists
-    effect: NoSchedule
-  containers:
-  - name: netdata
-    image: fzerorubigd/netdata
-    imagePullPolicy: IfNotPresent
-    securityContext:
-      privileged: true
-    env:
-    - name: ND_1
-      value: "netdata.conf|global/memory mode = save"
-    - name: ND_2
-      value: "netdata.conf|global/bind to = 0.0.0.0:19999"
-    - name: ND_3
-      value: "stream.conf|01-00-01/enabled = yes"
-    - name: ND_4
-      value: "stream.conf|01-00-01/history = 3600"
-    - name: ND_5
-      value: "stream.conf|01-00-01/memory mode = save"
-    - name: ND_6
-      value: "stream.conf|01-00-01/health enabled = yes"
-    - name: ND_7
-      value: "stream.conf|01-00-01/postpone alarms on connect seconds = 60"
-    - name: SEND_SLACK
-      value: "NO"
-    - name: SLACK_WEBHOOK_URL
-      value: "https://hooks.slack.com/services/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXX"
-    - name: SLACK_CHANNEL
-      value: "XXXX"
-    volumeMounts:
-      - name: proc
-        mountPath: /host/proc
-        readOnly: true
-      - name: run
-        mountPath: /var/run/docker.sock
-      - name: sys
-        mountPath: /host/sys
-      - name: health
-        mountPath: /etc/netdata/health.d
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
   volumes:
-    - name: proc
-      hostPath:
+    - hostPath:
         path: /proc
-    - name: run
-      hostPath:
+      name: proc
+    - hostPath:
         path: /var/run/docker.sock
-    - name: sys
-      hostPath:
+      name: run
+    - hostPath:
         path: /sys
-    - name: health
-      hostPath:
+      name: sys
+    - hostPath:
         path: /global/netdata/health.d
+      name: health
+    - name: default-token-gs1wq
+      secret:
+        defaultMode: 420
+        secretName: default-token-gs1wq
