@@ -31,7 +31,7 @@ spec:
             - name: BASIC_AUTH_USERNAME
               value: netdata
             - name: BASIC_AUTH_PASSWORD
-              value: ddQRkf5
+              value: NeverGonnaLetYouDown!
           name: nginx
           image: amazeeio/nginx
           imagePullPolicy: IfNotPresent
