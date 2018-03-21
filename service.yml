@@ -1,15 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    service: metadata-master
   name: netdata-master
   namespace: netdata
 spec:
   ports:
-    - port: 19999
+    - name: http
+      port: 19999
       protocol: TCP
       targetPort: 19999
   selector:
-    service: netdata-master
+    app: netdata-master
   sessionAffinity: None
   type: ClusterIP
 status:
