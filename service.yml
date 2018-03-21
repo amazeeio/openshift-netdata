@@ -1,10 +1,16 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: netdata-master
   namespace: netdata
 spec:
-  type: ExternalName
   ports:
-  - port: 19999
-  externalName: 192.168.10.1
+    - port: 19999
+      protocol: TCP
+      targetPort: 19999
+  selector:
+    service: netdata-master
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
