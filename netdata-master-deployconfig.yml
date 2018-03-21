@@ -31,15 +31,15 @@ spec:
             - name: ND_2
               value: 'netdata.conf|global/bind to = 0.0.0.0:19999'
             - name: ND_3
-              value: stream.conf|01-00-01/enabled = yes
+              value: stream.conf|11111111-2222-3333-4444-555555555555/enabled = yes
             - name: ND_4
-              value: stream.conf|01-00-01/history = 3600
+              value: stream.conf|11111111-2222-3333-4444-555555555555/history = 3600
             - name: ND_5
-              value: stream.conf|01-00-01/memory mode = save
+              value: stream.conf|11111111-2222-3333-4444-555555555555/memory mode = save
             - name: ND_6
-              value: stream.conf|01-00-01/health enabled = yes
+              value: stream.conf|11111111-2222-3333-4444-555555555555/health enabled = yes
             - name: ND_7
-              value: stream.conf|01-00-01/postpone alarms on connect seconds = 60
+              value: stream.conf|11111111-2222-3333-4444-555555555555/postpone alarms on connect seconds = 60
             - name: SEND_SLACK
               value: 'NO'
             - name: SLACK_WEBHOOK_URL
@@ -90,7 +90,6 @@ spec:
               readOnly: true
       dnsPolicy: ClusterFirst
       hostIPC: true
-      hostNetwork: true
       hostPID: true
       imagePullSecrets:
         - name: default-dockercfg-p332k
