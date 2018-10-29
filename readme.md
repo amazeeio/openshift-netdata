@@ -28,9 +28,11 @@ In order to deploy netdata to all nodes in your openshift cluster you need to ch
 
 and add following annotation
 
-> metadata:
->   annotations:
->    openshift.io/node-selector: ""
+```
+metadata:
+  annotations:
+    openshift.io/node-selector: ""
+```
 
 ## Pitfals
 
