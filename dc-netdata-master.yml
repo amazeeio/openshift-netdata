@@ -101,9 +101,6 @@ spec:
       hostPID: true
       imagePullSecrets:
         - name: default-dockercfg-p332k
-      nodeName: node3-vmw-drupal
-      nodeSelector:
-        region: urz
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
