@@ -36,8 +36,6 @@ spec:
           image: amazeeio/nginx
           imagePullPolicy: IfNotPresent
       dnsPolicy: ClusterFirst
-      imagePullSecrets:
-        - name: default-dockercfg-p332k
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
