@@ -40,8 +40,6 @@ spec:
               mountPath: /host/sys
             - name: cache
               mountPath: /var/cache/netdata
-      nodeSelector:
-        region: urz
       volumes:
         - name: proc
           hostPath:
