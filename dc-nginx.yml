@@ -26,12 +26,20 @@ spec:
         app: nginx
         deploymentconfig: nginx
     spec:
+      volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: volume-configmap
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: nginx-conf
+          name: volume-configmap
       containers:
         - env:
             - name: BASIC_AUTH_USERNAME
               value: netdata
             - name: BASIC_AUTH_PASSWORD
-              value: NeverGonnaLetYouDown!
+              value: NgLyD!
           name: nginx
           image: amazeeio/nginx
           imagePullPolicy: IfNotPresent
