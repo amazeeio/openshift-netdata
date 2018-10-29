@@ -25,7 +25,9 @@ Change the Username and Password for Basicauth in `dc-nginx.yml`
 
 In order to deploy netdata to all nodes in your openshift cluster you need to change the project and add an annotation
 > $ oc edit project netdata
+
 and add following annotation
+
 > metadata:
 >   annotations:
 >    openshift.io/node-selector: ""
