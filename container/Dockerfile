@@ -22,6 +22,5 @@ RUN apk update \
     && chown -R netdata:netdata /etc/netdata
 
 RUN mkdir -p /netdata/python.d && mkdir -p /netdata/health.d
-USER netdata
 
 ENTRYPOINT ["/entrypoint"]
