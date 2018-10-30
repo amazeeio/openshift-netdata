@@ -21,7 +21,7 @@ RUN apk update \
     && chmod a+x /entrypoint \
     && chown -R netdata:netdata /etc/netdata
 
-RUN mkdir -p /netdata/{health,python}.d
+RUN mkdir -p /netdata/python.d && mkdir -p /netdata/health.d
 USER netdata
 
 ENTRYPOINT ["/entrypoint"]
