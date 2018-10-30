@@ -9,7 +9,7 @@ data:
 
           location / {
               proxy_ignore_client_abort on;
-              proxy_pass http://netdata-master.netdata.svc.cluster.local:19999;
+              proxy_pass http://netdata-master.netdata.svc:19999;
               proxy_redirect off;
               proxy_set_header  X-Real-IP  $remote_addr;
               proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
