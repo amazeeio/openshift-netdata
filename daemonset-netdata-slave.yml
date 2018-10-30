@@ -25,7 +25,7 @@ spec:
               cpu: 0.15
           securityContext:
             privileged: true
-          image: dasrecht/netdata-docker
+          image: dasrecht/netdata-docker:latest
           name: netdata
           envFrom:
           - configMapRef:
