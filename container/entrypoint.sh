@@ -47,6 +47,6 @@ done
 if [ "$1" = 'bash' ]; then
     exec /bin/bash
 else
-    exec /usr/sbin/netdata -D -u netdata -s /host $@
+    exec /usr/sbin/netdata -D -u root -s /host $@
 fi
 
