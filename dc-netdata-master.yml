@@ -55,7 +55,7 @@ spec:
                 https://hooks.slack.com/services/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXX
             - name: SLACK_CHANNEL
               value: XXXX
-          image: fzerorubigd/netdata
+          image: dasrecht/netdata-docker
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
