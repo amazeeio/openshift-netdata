@@ -1,6 +1,7 @@
 FROM alpine:latest
 
 ADD entrypoint.sh /entrypoint
+
 RUN apk update \
     && apk add alpine-sdk autoconf automake curl gcc git libmnl-dev make \
             netcat-openbsd pkgconfig py-yaml python util-linux-dev zlib-dev \
@@ -18,9 +19,7 @@ RUN apk update \
     && ln -sf /dev/stdout /var/log/netdata/access.log \
     && ln -sf /dev/stdout /var/log/netdata/debug.log \
     && ln -sf /dev/stderr /var/log/netdata/error.log \
-    && chmod a+x /entrypoint \
-    && chown -R netdata:netdata /etc/netdata
-
+    && chmod a+x /entrypoint
 RUN mkdir -p /netdata/python.d && mkdir -p /netdata/health.d
-
+ENV VERSION=V0.0.1
 ENTRYPOINT ["/entrypoint"]

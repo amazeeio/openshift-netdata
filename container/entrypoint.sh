@@ -5,13 +5,16 @@ set -exo pipefail
 # Run iniset
 /bin/iniset
 # Fix permissions:
-chown netdata:netdata /usr/share/netdata/web/ -R
+chown root:root /usr/share/netdata/web/ -R
+
+echo running version:
+echo $VERSION
 
 # Remove health.d and python.d directories and copy new files:
 rm -r /etc/netdata/health.d
 rm -r /etc/netdata/python.d
 cp -r /netdata/{health,python}.d /etc/netdata/
-chown -R netdata:netdata /etc/netdata
+chown -R root:root /etc/netdata
 
 echo -n "" > /usr/share/netdata/web/version.txt
 
